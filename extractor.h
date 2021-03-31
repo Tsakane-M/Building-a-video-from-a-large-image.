@@ -11,24 +11,21 @@
 namespace MHLPET015{
 
 
-// A CLASS DECLARATION,
+//A CLASS DECLARATION,
 class FrameSequence{
+    private:
+    int width;
+    int height;
     
-    std::vector<unsigned char **> imageSequence;// stores each extracted frame image
-                                                // as a dynamically allocated unsigned
-                                                // char array,
+    
 
     public:
-        FrameSequence(void){
-
-        }
-        ~FrameSequence{
-
-        }
-
-        setFrameSize(int width,int height){
-
-        }
+        std::vector<unsigned char **> imageSequence;// stores each extracted frame image
+                                                // as a dynamically allocated unsigned
+                                                 // char array,
+        FrameSequence(void);
+        ~FrameSequence();
+        void setFrameSize(int width,int height);
 };
 
 
