@@ -4,104 +4,78 @@
 int main(int argc, char* argv[] )
 {
     std::string filename;//stores filename
+    int width;//width of frames;
+    int height;//height of frames;
+
+    int x1; //begin x of pixels
+    int y1; //begin y of pixels
+    int x2; //end x of pixels
+    int y2; //end y of pixels
+
+    std::string instruction;
+    std::string filestart;
+
+
+
 
     //check argument inputs
     if(argc == 1){
 		filename = "sloan_image.pgm";
 	}
-	else{	
-		filename = argv[1];
-	}
-     //initialise FramseSequence class to store vector.
-    MHLPET015::FrameSequence theSequence;
-    theSequence.setFrameSize(4130,1968);//4130,1968
-    int numberOfFrameImages=1;
-
-    //declare data array to store data read in
-    char* data=new char[theSequence.getHeight()*theSequence.getWidth()];
-    int rows=theSequence.getHeight();
-    int columns=theSequence.getWidth();
-
-    //read in the file
-    std::ifstream in;
-    in.open(filename,std::ios::in|std::ios::out|std::ios::binary);//open file as binary file
-    
-    if(in.is_open()){
-        
-        in.seekg(0,std::ios::beg);//Move pointer to beginning of file.
-        //skip 4 lines
-        for(int i=0;i<4;i++){
-            in.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-        }
-        in.read(data,rows*columns);//Read in
-        std::cout<<data<<std::endl;
-        
-        //close reading
-        in.close();
-        
-
-
-    }
-    else{
-		std::cout << "Unable to open the file\n" ;
-	}
 	
 
+    if(argc>1){
+        filename = argv[1];
+        std::string argumenta(argv[2]);
+        std::string argumentb(argv[7]);
+        std::string argumentc(argv[5]);
+        std::string argumentd(argv[10]);
 
-    //read in image to vector.
 
-     
-    //Read from file to data array
-    //initialise a pointer to data array
-    int dataPointer=0;
-
-    //for each frame
-    for(int i=0;i<numberOfFrameImages;i++){
-
-        int read_pixels=0; //stores how many pixels have been stored in each frame
-        
-
-        //initialise 2D pointer to store the 2D frame image points
-        unsigned char **frameImage=new unsigned char*[rows];
-
-     
-        //check if the frame image points to a nullptr
-        if(frameImage!=nullptr){
-            
-            //for each row
-            for(int j=0;j<rows;j++){
-
-                //initialise a pointer to that row
-                frameImage[j]=new unsigned char[columns];
-
-                //for each column in that row
-                for(int k=0;k<columns;k++){
-                    //populate each column of that row with input data
-                    frameImage[j][k]=data[dataPointer];
-
-                    //increase pointer value
-                    dataPointer++;
-
-                    //printout elements of frameImage.
-                    //std::cout<<frameImage[j][k]<<" ";
-
-                    //increase pixel count
-                    read_pixels++;
-
-                }
-                //std::cout<<std::endl;
+        if(argumenta=="-t"){
+            x1=std::stoi(argv[3]);
+            y1=std::stoi(argv[4]);
+            x2=std::stoi(argv[5]);
+            y2=std::stoi(argv[6]);
 
         }
-            //save pointer array to vector in which stores the Sequence.
-            theSequence.imageSequence.push_back(frameImage);
-         
-            }
+        if(argumenta=="-s"){
+            width=std::stoi(argv[3]);
+            height=std::stoi(argv[4]);
+        }
+        if(argumentb=="-s"){
+            width=std::stoi(argv[8]);
+            height=std::stoi(argv[9]);
+        }
+        if(argumentc=="-t"){
+            x1=std::stoi(argv[6]);
+            y1=std::stoi(argv[7]);
+            x2=std::stoi(argv[8]);
+            y2=std::stoi(argv[9]);
+
+        }
+        if(argumentd=="-w"){
+            instruction=argv[11];
+            filestart=argv[12];
+
+
+        }
 
     }
+    std::cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<width<<" "<<height<<" "<<instruction<<" "<<filestart<<"end"<<std::endl;
+
     
+
+
+
+     //initialise FramseSequence class to store vector.
+    MHLPET015::FrameSequence theSequence;
+    theSequence=MHLPET015::ReadImagesFile(filename,theSequence);
+    
+    
+    int rows=theSequence.getHeight();
+    int columns=theSequence.getWidth();
     //write to the file
-
-
     //Creating an output stream
     std::ofstream out;
 

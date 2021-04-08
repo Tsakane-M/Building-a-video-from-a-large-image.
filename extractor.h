@@ -30,14 +30,19 @@ class FrameSequence{
         FrameSequence(void);//contsructor
         ~FrameSequence();//destructor
 
+        int numberOfFrames;//stores the number of frames in the vector.
+
         //Setter
         void setFrameSize(int w,int h);
 
         //Getters
         int getWidth();
         int getHeight();
+
+        
         
 };
+FrameSequence ReadImagesFile(std::string filename,FrameSequence theSequence);
 
 
 
