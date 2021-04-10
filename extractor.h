@@ -42,10 +42,17 @@ class FrameSequence{
         int getHeight();
         int numberOfFrames;//stores the number of frames in the vector.
 
+        void extractFrames(FrameSequence theSequence,int x0,int y0,int x3,int y3,int framec);
+
+        
+        
+
         
         
 };
-FrameSequence ReadImagesFile(std::string filenm,FrameSequence theSequence);
+
+FrameSequence ReadImagesFile(std::string filenm,FrameSequence theSequence,std::string dimensions);
+std::string getImageDimensions(std::string filename);
 
 
 

@@ -71,7 +71,14 @@ int main(int argc, char* argv[] )
      //initialise FramseSequence class to store vector.s
     MHLPET015::FrameSequence theSequence;
     theSequence.setFrameSize(width,height);
-    theSequence=MHLPET015::ReadImagesFile(filename,theSequence);
+
+  
+
+
+
+    std::string dimensions=MHLPET015::getImageDimensions(filename);
+    theSequence=MHLPET015::ReadImagesFile(filename,theSequence,dimensions);
+    theSequence.extractFrames(theSequence,x1,y1,x2,y2,2);
 
        //compute number of frames
     theSequence.numberOfFrames=1;
@@ -113,17 +120,27 @@ int main(int argc, char* argv[] )
 
 
         out<<"P5"<<std::endl;
-        out<<width<<" "<<height<<std::endl;
+        out<<dimensions<<std::endl;
         out<<"255"<<std::endl;
         
+        //test 1
+        std::cout<<theSequence.wholeImage[0][0][20]<<std::endl;
+        //std::cout<<theSequence.imageSequence[0][0]<<std::endl;
+
 
         for(int i=0;i<rows;i++){
                  out.write((char*)(printArray[i]) , columns);
                  //std::cout<<printArray[i]<<std::endl;
                  //out.write((char*)data , sizeof(data));
-
-            
         
+        }
+
+        for(int i=0;i<2;i++){
+            for(int j=0;j<rows;j++){
+                out.write((char*)(theSequence.wholeImage[i][j]) , columns);
+            }
+
+
         }
       
         out.close();
