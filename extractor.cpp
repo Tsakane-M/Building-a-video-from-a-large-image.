@@ -7,10 +7,10 @@ int main(int argc, char* argv[] )
     int width;//width of frames;
     int height;//height of frames;
 
-    int x1; //begin x of pixels
-    int y1; //begin y of pixels
-    int x2; //end x of pixels
-    int y2; //end y of pixels
+    float x1; //begin x of pixels
+    float y1; //begin y of pixels
+    float x2; //end x of pixels
+    float y2; //end y of pixels
 
     std::string instruction;
     std::string filestart;
@@ -68,9 +68,15 @@ int main(int argc, char* argv[] )
 
 
 
-     //initialise FramseSequence class to store vector.
+     //initialise FramseSequence class to store vector.s
     MHLPET015::FrameSequence theSequence;
+    theSequence.setFrameSize(width,height);
     theSequence=MHLPET015::ReadImagesFile(filename,theSequence);
+
+       //compute number of frames
+    theSequence.numberOfFrames=1;
+    //double x=std::sqrt(4);
+    //std::cout<<x<<std::endl;
     
     
     int rows=theSequence.getHeight();
@@ -83,7 +89,7 @@ int main(int argc, char* argv[] )
     out.open("Sequence000.pgm", std::ios::out);
 
     //for
-        unsigned char** printArray=theSequence.imageSequence[0];
+        unsigned char** printArray=theSequence.wholeImage[0];
         char ** charArray;
         //std::cout<<"variable: "<<printArray[0] <<std::endl;
         //out.write("P5",sizeof("P5"));
@@ -107,7 +113,7 @@ int main(int argc, char* argv[] )
 
 
         out<<"P5"<<std::endl;
-        out<<"4130 1968"<<std::endl;
+        out<<width<<" "<<height<<std::endl;
         out<<"255"<<std::endl;
         
 

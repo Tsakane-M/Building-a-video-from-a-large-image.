@@ -10,9 +10,9 @@ namespace MHLPET015{
 		{
 			for(int r = 0; r < height; r++)
 			{
-				delete imageSequence[n][r]; //delete pointer to each row of raw file
+				delete wholeImage[n][r]; //delete pointer to each row of raw file
 			}
-			delete imageSequence[n]; //delete pointer to each raw file
+			delete wholeImage[n]; //delete pointer to each raw file
 		}
 	}
     
@@ -41,14 +41,18 @@ namespace MHLPET015{
     FrameSequence ReadImagesFile(std::string filenm,FrameSequence theSequence){
         std::string filename;//stores filename
         filename=filenm;
-        theSequence.setFrameSize(4130,1968);//4130,1968
         int numberOfFrameImages=1;
         int numberOfFrames=1;
+  
 
         //declare data array to store data read in
         char* data=new char[theSequence.getHeight()*theSequence.getWidth()];
         int rows=theSequence.getHeight();
         int columns=theSequence.getWidth();
+
+      
+
+
 
         //read in the file
         std::ifstream in;
@@ -59,7 +63,7 @@ namespace MHLPET015{
             in.seekg(0,std::ios::beg);//Move pointer to beginning of file.
             //skip 4 lines
             for(int i=0;i<4;i++){
-                in.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+                in.ignore(1000,'\n');
             }
             in.read(data,rows*columns);//Read in
             //std::cout<<data<<std::endl;
@@ -115,12 +119,15 @@ namespace MHLPET015{
 
             }
                 //save pointer array to vector in which stores the Sequence.
-                theSequence.imageSequence.push_back(frameImage);
+                theSequence.wholeImage.push_back(frameImage);
          
             }
 
     }return theSequence;
     }
+
+
+    
 }
 
 

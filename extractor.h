@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <cmath>
 
 namespace MHLPET015{
 
@@ -22,6 +23,7 @@ class FrameSequence{
     
 
     public:
+        std::vector<unsigned char **> wholeImage;
         std::vector<unsigned char **> imageSequence;
         //unsigned char **
         // stores each extracted frame image
@@ -30,7 +32,7 @@ class FrameSequence{
         FrameSequence(void);//contsructor
         ~FrameSequence();//destructor
 
-        int numberOfFrames;//stores the number of frames in the vector.
+        
 
         //Setter
         void setFrameSize(int w,int h);
@@ -38,11 +40,14 @@ class FrameSequence{
         //Getters
         int getWidth();
         int getHeight();
+        int numberOfFrames;//stores the number of frames in the vector.
 
         
         
 };
-FrameSequence ReadImagesFile(std::string filename,FrameSequence theSequence);
+FrameSequence ReadImagesFile(std::string filenm,FrameSequence theSequence);
+
+
 
 
 
