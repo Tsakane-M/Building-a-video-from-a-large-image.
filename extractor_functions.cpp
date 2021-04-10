@@ -222,8 +222,44 @@ namespace MHLPET015{
 
     
     }
-}
 
+
+
+    void writeWholeImage(FrameSequence Sequence,std::string dim){
+
+        //write to the file
+        //Creating an output stream
+        std::ofstream out;
+        std::string dimensions=dim;
+
+        //Calling the open function to write an object to a file
+        out.open("FullImage.pgm", std::ios::out);
+
+        FrameSequence theSequence=Sequence;
+        out<<"P5"<<std::endl;
+        out<<dimensions<<std::endl;
+        out<<"255"<<std::endl;
+
+        unsigned char** printArray=theSequence.wholeImage[0];
+
+
+        //extracting image dimensions
+        std::stringstream ss; 
+        ss<<dimensions;
+        std::string temp = "";
+        ss >> temp; // exctract width
+        int column=std::stoi(temp); // convert to int
+
+        ss>>temp;//extract height
+        int row=std::stoi(temp); // convert to int
+
+        for(int i=0;i<row;i++){
+                 out.write((char*)(printArray[i]) , column);
+        
+        }
+
+    }
+}
 
 
 

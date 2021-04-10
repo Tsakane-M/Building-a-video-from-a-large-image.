@@ -80,7 +80,7 @@ int main(int argc, char* argv[] )
     theSequence=MHLPET015::ReadImagesFile(filename,theSequence,dimensions);
     theSequence.extractFrames(theSequence,x1,y1,x2,y2,2);
 
-       //compute number of frames
+    //compute number of frames
     theSequence.numberOfFrames=1;
     //double x=std::sqrt(4);
     //std::cout<<x<<std::endl;
@@ -88,6 +88,9 @@ int main(int argc, char* argv[] )
     
     int rows=theSequence.getHeight();
     int columns=theSequence.getWidth();
+
+    writeWholeImage(theSequence,dimensions);
+
     //write to the file
     //Creating an output stream
     std::ofstream out;
@@ -97,7 +100,7 @@ int main(int argc, char* argv[] )
 
     //for
         unsigned char** printArray=theSequence.wholeImage[0];
-        char ** charArray;
+        //char ** charArray;
         //std::cout<<"variable: "<<printArray[0] <<std::endl;
         //out.write("P5",sizeof("P5"));
         //out.write("200 200",sizeof("200 200"));
@@ -119,21 +122,14 @@ int main(int argc, char* argv[] )
 
 
 
-        out<<"P5"<<std::endl;
-        out<<dimensions<<std::endl;
-        out<<"255"<<std::endl;
+        
         
         //test 1
-        std::cout<<theSequence.wholeImage[0][0][20]<<std::endl;
+        //std::cout<<theSequence.wholeImage[0][0][20]<<std::endl;
         //std::cout<<theSequence.imageSequence[0][0]<<std::endl;
 
 
-        for(int i=0;i<rows;i++){
-                 out.write((char*)(printArray[i]) , columns);
-                 //std::cout<<printArray[i]<<std::endl;
-                 //out.write((char*)data , sizeof(data));
         
-        }
 
         for(int i=0;i<2;i++){
             for(int j=0;j<rows;j++){
