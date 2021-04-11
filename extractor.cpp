@@ -79,14 +79,21 @@ int main(int argc, char* argv[] )
     theSequence=MHLPET015::ReadImagesFile(filename,theSequence,dimensions);
     //MHLPET015::WriteImage(theSequence,dimensions);
     theSequence=MHLPET015::extractFrames(theSequence,x1,y1,x2,y2);
-    theSequence.WriteFrames(theSequence,prefixName);
-
-    //compute number of frames
-    theSequence.numberOfFrames=1;
-    //double x=std::sqrt(4);
-    //std::cout<<x<<std::endl;
-    std::cout<<"number of frames in vector "<<theSequence.imageSequence.size()<<std::endl;
+    //theSequence.WriteFrames(theSequence,prefixName);
+    //theSequence.WriteFrames(MHLPET015::sequenceInverter(theSequence),prefixName);
+    theSequence.WriteFrames(MHLPET015::sequenceReverse(theSequence),prefixName);
     
+    
+
+
+   
+
+
+
+
+
+
+ 
     
     
 

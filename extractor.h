@@ -54,6 +54,9 @@ FrameSequence ReadImagesFile(std::string filenm,FrameSequence theSequence,std::s
 std::string getImageDimensions(std::string filename);
 void WriteImage(FrameSequence mySeq,std::string dim);
 FrameSequence extractFrames(FrameSequence oldSeq,int x0,int y0,int x3,int y3);
+FrameSequence sequenceInverter(FrameSequence oldSeq);
+FrameSequence sequenceReverse(FrameSequence oldSeq);
+FrameSequence reInverse(FrameSequence oldSeq);
 
 
 

@@ -179,57 +179,70 @@ namespace MHLPET015{
     FrameSequence extractFrames(FrameSequence oldSeq,int x0,int y0,int x3,int y3){
         FrameSequence newSequence=oldSeq;
         //take in co-ordinates
-        int x1=x0; //begin x of pixels
-        int y1=y0; //begin y of pixels
-        int x2=x3; //end x of pixels
-        int y2=y3; //end y of pixels
+        float x1=x0; //begin x of pixels
+        float y1=y0; //begin y of pixels
+        float x2=x3; //end x of pixels
+        float y2=y3; //end y of pixels
 
+     
 
-
-        float gradient=((y2-y1)/(x2-x1));
-        std::cout<<gradient<<std::endl;
+        float gradient=(float)((y2-y1)/(x2-x1));
+        std::cout<<"gradient is:"<<gradient<<std::endl;
 
         int rows=newSequence.getHeight();
         int columns=newSequence.getWidth();
-        int numberOfFrameImages=4;
+        int numberOfFrameImages=0;
+        
 
-        for(int i=0;i<numberOfFrameImages;i++){
+        for(int y=y1+1; y<=y2 ;++y){
             
             //initialise 2D pointer to store the 2D frame image points
             unsigned char **thisSequence=new unsigned char*[rows];
+            //update y1 variable
+            x1=x1+gradient;
+            //round off y1
+            x1=(std::round(x1));
+            
+            //iterate and copy
 
             
 
             if(thisSequence!=nullptr){
+
+                
                 
                 //for each row
                 int r=0;
-                for(int j=y1;j<y1+rows;j++){
+                for(int j=y1;j<y1+rows;++j){
                     //initialise a pointer to that row
                     thisSequence[r]=new unsigned char[columns];
 
                     int c=0;
                     //for each column in that row
-                    for(int k=x1;k<x1+columns;k++){
+                    for(int k=x1;k<x1+columns;++k){
                         
                         thisSequence[r][c]=newSequence.wholeImage[0][j][k];
-                        //std::cout<<thisSequence[r][c]<<std::endl;
-                        //std::cout<<theSequence.wholeImage[0][r][c]<<std::endl;
-                        //std::cout<<c<<std::endl;
                         c++;
+
+                       
                     }
+                    
                      
                     r++;
+                   
                     
                 }
                 
                 
-        std::cout<<"frame done"<<std::endl; 
+         
         newSequence.imageSequence.push_back(thisSequence);
+       
         }
         
       
     }
+    
+    std::cout<<"number of frames inside the frame vector is: "<<newSequence.imageSequence.size()<<std::endl;
     return newSequence;
     
     }
@@ -279,9 +292,8 @@ namespace MHLPET015{
         int rows=theSequence.getHeight();
         int columns=theSequence.getWidth();
 
-        for(int i=0;i<4;i++){
-            //write to the file
-            //Creating an output stream
+    for(int i=0;i<theSequence.imageSequence.size();i++){
+    //DEBUG
             std::ofstream out;
             std::stringstream ss;
             std::string path="./Frames_Dir/";
@@ -295,24 +307,78 @@ namespace MHLPET015{
 
             out.open(fileName, std::ios::out);
 
-            unsigned char** printArray=theSequence.imageSequence[3];
+            unsigned char** printArray=theSequence.imageSequence[i];
 
             out<<"P5"<<std::endl;
-            out<<columns<<" "<<rows<<std::endl;
+            out<<width<<" "<<height<<std::endl;
             out<<"255"<<std::endl;
 
             
-            for(int j=0;j<rows;j++){
-                    out.write((char*)(printArray[j]) , columns);
+
+            
+            for(int j=0;j<height;j++){
+                    out.write((char*)(printArray[j]) , width);
 
             }
         
             out.close();
-            //return 1;
-
-        }
 
     }
+
+    }
+
+    FrameSequence sequenceInverter(FrameSequence oldSeq){
+        FrameSequence theSequence=oldSeq;
+            //initialise 2D pointer to store the 2D frame image points
+        unsigned char **inverted=new unsigned char*[theSequence.getHeight()];
+
+        for(int j=0;j<theSequence.getHeight();++j){
+            //initialise a pointer to that row
+            inverted[j]=new unsigned char[theSequence.getWidth()];
+        }
+        
+        for(int n=0;n<theSequence.imageSequence.size();n++){
+        // Convert the unsigned characters to integers
+            for(int i=0; i<theSequence.getHeight(); i++){
+                for(int j=0; j<theSequence.getWidth(); j++){
+                    theSequence.imageSequence[n][i][j]=static_cast<unsigned char>(255-(theSequence.imageSequence[n][i][j]));
+                }
+            }
+        }
+       
+        return theSequence;
+
+    }
+
+     FrameSequence sequenceReverse(FrameSequence oldSeq)
+        FrameSequence theSequence=oldSeq;
+         unsigned char **reversed=new unsigned char*[theSequence.getHeight()];
+
+        for(int j=0;j<theSequence.getHeight();++j){
+            //initialise a pointer to that row
+            reversed[j]=new unsigned char[theSequence.getWidth()];
+        }
+        
+        for(int n=theSequence.imageSequence.size()-1;n>-1;n--){
+        // Convert the unsigned characters to integers
+            for(int i=0; i<theSequence.getHeight(); i++){
+                for(int j=0; j<theSequence.getWidth(); j++){
+                    reversed[i][j]=(theSequence.imageSequence[n][i][j]);
+                }
+            }
+        }
+        
+       
+        return theSequence;
+
+     }
+
+
+     FrameSequence reInverse(FrameSequence oldSeq){
+         
+     }
+
+
 
 
 
