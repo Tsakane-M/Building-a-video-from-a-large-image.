@@ -42,19 +42,19 @@ class FrameSequence{
         int getHeight();
         int numberOfFrames;//stores the number of frames in the vector.
 
-        void extractFrames(FrameSequence theSequence,int x0,int y0,int x3,int y3,int framec);
         
-
-        
-        
-
+        void writeWholeImage(FrameSequence Sequence,std::string dim);
+        void WriteFrames(FrameSequence mySeq,std::string pN);
+  
         
         
 };
 
 FrameSequence ReadImagesFile(std::string filenm,FrameSequence theSequence,std::string dimensions);
 std::string getImageDimensions(std::string filename);
-void writeWholeImage(FrameSequence Sequence,std::string dim);
+void WriteImage(FrameSequence mySeq,std::string dim);
+FrameSequence extractFrames(FrameSequence oldSeq,int x0,int y0,int x3,int y3);
+
 
 
 
@@ -62,4 +62,4 @@ void writeWholeImage(FrameSequence Sequence,std::string dim);
 
 
 }
-#endif // matches the #ifndef
+#endif // matches the if

@@ -13,7 +13,9 @@ int main(int argc, char* argv[] )
     float y2; //end y of pixels
 
     std::string instruction;
-    std::string filestart;
+    std::string prefixName;
+
+    std::string numberOfSequences;
 
 
 
@@ -29,7 +31,7 @@ int main(int argc, char* argv[] )
         std::string argumenta(argv[2]);
         std::string argumentb(argv[7]);
         std::string argumentc(argv[5]);
-        std::string argumentd(argv[10]);
+        std::string argumentd(argv[11]);
 
 
         if(argumenta=="-t"){
@@ -55,14 +57,14 @@ int main(int argc, char* argv[] )
 
         }
         if(argumentd=="-w"){
-            instruction=argv[11];
-            filestart=argv[12];
+            instruction=argv[12];
+            prefixName=(argv[13]) ;
 
 
         }
 
     }
-    std::cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<width<<" "<<height<<" "<<instruction<<" "<<filestart<<"end"<<std::endl;
+    std::cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<width<<" "<<height<<" "<<instruction<<" "<<prefixName<<"end"<<std::endl;
 
     
 
@@ -72,74 +74,21 @@ int main(int argc, char* argv[] )
     MHLPET015::FrameSequence theSequence;
     theSequence.setFrameSize(width,height);
 
-  
-
-
-
     std::string dimensions=MHLPET015::getImageDimensions(filename);
+
     theSequence=MHLPET015::ReadImagesFile(filename,theSequence,dimensions);
-    theSequence.extractFrames(theSequence,x1,y1,x2,y2,2);
+    //MHLPET015::WriteImage(theSequence,dimensions);
+    theSequence=MHLPET015::extractFrames(theSequence,x1,y1,x2,y2);
+    theSequence.WriteFrames(theSequence,prefixName);
 
     //compute number of frames
     theSequence.numberOfFrames=1;
     //double x=std::sqrt(4);
     //std::cout<<x<<std::endl;
+    std::cout<<"number of frames in vector "<<theSequence.imageSequence.size()<<std::endl;
     
     
-    int rows=theSequence.getHeight();
-    int columns=theSequence.getWidth();
-
-    writeWholeImage(theSequence,dimensions);
-
-    //write to the file
-    //Creating an output stream
-    std::ofstream out;
-
-    //Calling the open function to write an object to a file
-    out.open("Sequence000.pgm", std::ios::out);
-
-    //for
-        unsigned char** printArray=theSequence.wholeImage[0];
-        //char ** charArray;
-        //std::cout<<"variable: "<<printArray[0] <<std::endl;
-        //out.write("P5",sizeof("P5"));
-        //out.write("200 200",sizeof("200 200"));
-
-        int **intImage=new int*[rows];
-        //for each row
-            for(int j=0;j<rows;j++){
-
-                //initialise a pointer to that row
-                intImage[j]=new int[columns];
-                }
-
-        // Convert the unsigned characters to integers
-        for(int i=0; i<rows; i++){
-            for(int j=0; j<columns; j++){
-                (intImage)[i][j]=(int)printArray[i][j];
-            }
-        }
-
-
-
-        
-        
-        //test 1
-        //std::cout<<theSequence.wholeImage[0][0][20]<<std::endl;
-        //std::cout<<theSequence.imageSequence[0][0]<<std::endl;
-
-
-        
-
-        for(int i=0;i<2;i++){
-            for(int j=0;j<rows;j++){
-                out.write((char*)(theSequence.wholeImage[i][j]) , columns);
-            }
-
-
-        }
-      
-        out.close();
+    
 
 
     return 0;

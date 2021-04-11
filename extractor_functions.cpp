@@ -176,26 +176,29 @@ namespace MHLPET015{
     }
     
       //method to extract frames and save them to vector.
-    void FrameSequence::extractFrames(FrameSequence theSequence,int x0,int y0,int x3,int y3,int framec){
-
+    FrameSequence extractFrames(FrameSequence oldSeq,int x0,int y0,int x3,int y3){
+        FrameSequence newSequence=oldSeq;
         //take in co-ordinates
         int x1=x0; //begin x of pixels
         int y1=y0; //begin y of pixels
         int x2=x3; //end x of pixels
         int y2=y3; //end y of pixels
 
-        int frameCount=framec;
+
 
         float gradient=((y2-y1)/(x2-x1));
         std::cout<<gradient<<std::endl;
 
-        int rows=theSequence.getHeight();
-        int columns=theSequence.getWidth();
-        int numberOfFrameImages=2;
+        int rows=newSequence.getHeight();
+        int columns=newSequence.getWidth();
+        int numberOfFrameImages=4;
 
         for(int i=0;i<numberOfFrameImages;i++){
+            
             //initialise 2D pointer to store the 2D frame image points
             unsigned char **thisSequence=new unsigned char*[rows];
+
+            
 
             if(thisSequence!=nullptr){
                 
@@ -205,61 +208,119 @@ namespace MHLPET015{
                     //initialise a pointer to that row
                     thisSequence[r]=new unsigned char[columns];
 
+                    int c=0;
                     //for each column in that row
                     for(int k=x1;k<x1+columns;k++){
-                        int c=0;
-                        thisSequence[r][c]=theSequence.wholeImage[0][j][k];
-                        std::cout<<thisSequence[r][c]<<std::endl;
-                        std::cout<<theSequence.wholeImage[0][r][c]<<std::endl;
+                        
+                        thisSequence[r][c]=newSequence.wholeImage[0][j][k];
+                        //std::cout<<thisSequence[r][c]<<std::endl;
+                        //std::cout<<theSequence.wholeImage[0][r][c]<<std::endl;
+                        //std::cout<<c<<std::endl;
                         c++;
-                    }r++;
+                    }
+                     
+                    r++;
+                    
                 }
+                
+                
+        std::cout<<"frame done"<<std::endl; 
+        newSequence.imageSequence.push_back(thisSequence);
         }
-        theSequence.imageSequence.push_back(thisSequence);
+        
       
     }
-
-
+    return newSequence;
     
     }
 
 
-
-    void writeWholeImage(FrameSequence Sequence,std::string dim){
-
-        //write to the file
-        //Creating an output stream
-        std::ofstream out;
+    void WriteImage(FrameSequence mySeq,std::string dim){
+        FrameSequence theSequence=mySeq;
         std::string dimensions=dim;
+        std::stringstream ss;
 
-        //Calling the open function to write an object to a file
-        out.open("FullImage.pgm", std::ios::out);
-
-        FrameSequence theSequence=Sequence;
-        out<<"P5"<<std::endl;
-        out<<dimensions<<std::endl;
-        out<<"255"<<std::endl;
-
-        unsigned char** printArray=theSequence.wholeImage[0];
-
-
-        //extracting image dimensions
-        std::stringstream ss; 
         ss<<dimensions;
         std::string temp = "";
         ss >> temp; // exctract width
         int column=std::stoi(temp); // convert to int
+        ss>>temp;//extract height
 
         ss>>temp;//extract height
         int row=std::stoi(temp); // convert to int
+    
+        //write to the file
+        //Creating an output stream
+        std::ofstream out;
 
+        //Calling the open function to write an object to a file
+        out.open("FullImage.pgm", std::ios::out);
+
+    
+        unsigned char** printArray=theSequence.wholeImage[0];
+        
+
+        out<<"P5"<<std::endl;
+        out<<dimensions<<std::endl;
+        out<<"255"<<std::endl;
+        
         for(int i=0;i<row;i++){
                  out.write((char*)(printArray[i]) , column);
+
+        }
+      
+        out.close();
+        //return 1;
+    }
+
+    void FrameSequence::WriteFrames(FrameSequence mySeq,std::string pN){
+        FrameSequence theSequence=mySeq;
+        std::string prefixName=pN;
+        int rows=theSequence.getHeight();
+        int columns=theSequence.getWidth();
+
+        for(int i=0;i<4;i++){
+            //write to the file
+            //Creating an output stream
+            std::ofstream out;
+            std::stringstream ss;
+            std::string path="./Frames_Dir/";
+
+            ss<<path<<prefixName<<i<<".pgm";
+
+            //Calling the open function to write an object to a file
+            std::string fileName;
+            ss>>fileName;
+            
+
+            out.open(fileName, std::ios::out);
+
+            unsigned char** printArray=theSequence.imageSequence[3];
+
+            out<<"P5"<<std::endl;
+            out<<columns<<" "<<rows<<std::endl;
+            out<<"255"<<std::endl;
+
+            
+            for(int j=0;j<rows;j++){
+                    out.write((char*)(printArray[j]) , columns);
+
+            }
         
+            out.close();
+            //return 1;
+
         }
 
     }
+
+
+
+
+
+    
 }
+
 
 
 
