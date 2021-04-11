@@ -171,7 +171,7 @@ namespace MHLPET015{
 
     }
     
-    
+    delete []data;
     return theSequence;
     }
     
@@ -236,6 +236,7 @@ namespace MHLPET015{
                 
          
         newSequence.imageSequence.push_back(thisSequence);
+        
        
         }
         
@@ -350,7 +351,7 @@ namespace MHLPET015{
 
     }
 
-     FrameSequence sequenceReverse(FrameSequence oldSeq)
+     FrameSequence sequenceReverse(FrameSequence oldSeq){
         FrameSequence theSequence=oldSeq;
          unsigned char **reversed=new unsigned char*[theSequence.getHeight()];
 
@@ -372,11 +373,14 @@ namespace MHLPET015{
         return theSequence;
 
      }
+    FrameSequence reInverse(FrameSequence oldSeq){
+      
+        FrameSequence theSequence=oldSeq;
+        theSequence=MHLPET015::sequenceInverter(theSequence);
+        theSequence=MHLPET015::sequenceReverse(theSequence);
+        return theSequence;
 
-
-     FrameSequence reInverse(FrameSequence oldSeq){
-         
-     }
+    }
 
 
 

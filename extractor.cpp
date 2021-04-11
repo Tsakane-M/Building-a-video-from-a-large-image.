@@ -21,81 +21,92 @@ int main(int argc, char* argv[] )
 
 
     //check argument inputs
-    if(argc == 1){
-		filename = "sloan_image.pgm";
-	}
-	
 
-    if(argc>1){
-        filename = argv[1];
-        std::string argumenta(argv[2]);
-        std::string argumentb(argv[7]);
-        std::string argumentc(argv[5]);
-        std::string argumentd(argv[11]);
+    int a=2; //we use this variable to check arguments.
+    filename = argv[1]; //save filename found at arg value [2]
 
 
-        if(argumenta=="-t"){
-            x1=std::stoi(argv[3]);
-            y1=std::stoi(argv[4]);
-            x2=std::stoi(argv[5]);
-            y2=std::stoi(argv[6]);
+    while(a<argc-1){
+
+        if((std::string(argv[a]))=="-t"){
+            x1=std::stoi(argv[a+1]);
+            y1=std::stoi(argv[a+2]);
+            x2=std::stoi(argv[a+3]);
+            y2=std::stoi(argv[a+4]);
+            a+=4;
 
         }
-        if(argumenta=="-s"){
-            width=std::stoi(argv[3]);
-            height=std::stoi(argv[4]);
+
+        else if((std::string(argv[a]))=="-s"){
+            width=std::stoi(argv[a+1]);
+            height=std::stoi(argv[a+2]);
+            a+=2;
         }
-        if(argumentb=="-s"){
-            width=std::stoi(argv[8]);
-            height=std::stoi(argv[9]);
+
+        else if((std::string(argv[a]))=="-s"){
+            width=std::stoi(argv[a+1]);
+            height=std::stoi(argv[a+2]);
+            a+=2;
         }
-        if(argumentc=="-t"){
-            x1=std::stoi(argv[6]);
-            y1=std::stoi(argv[7]);
-            x2=std::stoi(argv[8]);
-            y2=std::stoi(argv[9]);
+        else if((std::string(argv[a]))=="-t"){
+            x1=std::stoi(argv[a+1]);
+            y1=std::stoi(argv[a+2]);
+            x2=std::stoi(argv[a+3]);
+            y2=std::stoi(argv[a+4]);
+            a+=4;
 
         }
-        if(argumentd=="-w"){
-            instruction=argv[12];
-            prefixName=(argv[13]) ;
-
+        else if((std::string(argv[a]))=="-w"){
+            instruction=std::string(argv[a+1]);
+            prefixName=std::string(argv[a+2]) ;
+            a+=2;
 
         }
+        a++;
+        
 
     }
-    std::cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<width<<" "<<height<<" "<<instruction<<" "<<prefixName<<"end"<<std::endl;
+
+
+
+    std::cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<width<<" "<<height<<" "<<instruction<<" "<<prefixName<<" end"<<std::endl;
 
     
 
 
 
-     //initialise FramseSequence class to store vector.s
+    //initialise FramseSequence class to store vector.s
     MHLPET015::FrameSequence theSequence;
+
+    //set width and height of Frames to be printed out.
     theSequence.setFrameSize(width,height);
 
+    //get dimensions of Original Image.
     std::string dimensions=MHLPET015::getImageDimensions(filename);
 
+    //read whole image to FrameSequence class
     theSequence=MHLPET015::ReadImagesFile(filename,theSequence,dimensions);
-    //MHLPET015::WriteImage(theSequence,dimensions);
+
+    //extract Frames from whole image.
     theSequence=MHLPET015::extractFrames(theSequence,x1,y1,x2,y2);
-    //theSequence.WriteFrames(theSequence,prefixName);
-    //theSequence.WriteFrames(MHLPET015::sequenceInverter(theSequence),prefixName);
-    theSequence.WriteFrames(MHLPET015::sequenceReverse(theSequence),prefixName);
-    
-    
+
+    //check instructions:
+    if(instruction=="none"){//if instruction is "none"
+        //printout unedited image sequence.
+        theSequence.WriteFrames(theSequence,prefixName);
+    }
+
+    else if(instruction=="invert"){
+        //printout inverted image sequence.
+        theSequence.WriteFrames(MHLPET015::sequenceInverter(theSequence),prefixName);
+
+    }
+    else if(instruction=="reinvert"){
+        //printout reversed and inverted image sequence.
+        theSequence.WriteFrames(MHLPET015::reInverse(theSequence),prefixName);
 
 
-   
-
-
-
-
-
-
- 
-    
-    
+    }
 
 
     return 0;
