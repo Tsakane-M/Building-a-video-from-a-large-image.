@@ -69,7 +69,7 @@ int main(int argc, char* argv[] )
 
 
 
-    std::cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<width<<" "<<height<<" "<<instruction<<" "<<prefixName<<" end"<<std::endl;
+   // std::cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<width<<" "<<height<<" "<<instruction<<" "<<prefixName<<" end"<<std::endl;
 
     
 

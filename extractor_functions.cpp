@@ -160,14 +160,12 @@ namespace MHLPET015{
                 theSequence.wholeImage.push_back(frameImage);
          
             }
-            /*for(int n = 0; n < numberOfFrameImages; n++)
-		{
-                for(int r = 0; r < row; r++)
-                {
-                    delete frameImage[n]; //delete pointer to each row of raw file
-                }
-			delete frameImage; //delete pointer to each raw file
-		}*/
+            /*    //Free each sub-array
+            for(int i = 0; i < row; ++i) {
+                delete[] frameImage[i];   
+            }
+            //Free the array of pointers
+            delete[] frameImage;*/
 
     }
     
@@ -187,7 +185,7 @@ namespace MHLPET015{
      
 
         float gradient=(float)((y2-y1)/(x2-x1));
-        std::cout<<"gradient is:"<<gradient<<std::endl;
+        //std::cout<<"gradient is:"<<gradient<<std::endl;
 
         int rows=newSequence.getHeight();
         int columns=newSequence.getWidth();
@@ -206,44 +204,82 @@ namespace MHLPET015{
             //iterate and copy
 
             
+        if(gradient>1){
+                if(thisSequence!=nullptr){
 
-            if(thisSequence!=nullptr){
+                    
+                    
+                    //for each row
+                    int r=0;
+                    for(int j=y1;j<y1+rows;++j){
+                        //initialise a pointer to that row
+                        thisSequence[r]=new unsigned char[columns];
 
-                
-                
-                //for each row
-                int r=0;
-                for(int j=y1;j<y1+rows;++j){
-                    //initialise a pointer to that row
-                    thisSequence[r]=new unsigned char[columns];
+                        int c=0;
+                        //for each column in that row
+                        for(int k=x1;k<x1+columns;++k){
+                            
+                            thisSequence[r][c]=newSequence.wholeImage[0][j][k];
+                            c++;
 
-                    int c=0;
-                    //for each column in that row
-                    for(int k=x1;k<x1+columns;++k){
                         
-                        thisSequence[r][c]=newSequence.wholeImage[0][j][k];
-                        c++;
-
-                       
+                        }
+                        
+                        
+                        r++;
+                    
+                        
                     }
                     
-                     
-                    r++;
-                   
                     
-                }
-                
-                
-         
-        newSequence.imageSequence.push_back(thisSequence);
+            
+            newSequence.imageSequence.push_back(thisSequence);
+            
         
-       
+            }
+            
+        
+        }//printing ends here for y.
+        else{
+             if(thisSequence!=nullptr){
+
+                    
+                    
+                    //for each row
+                    int r=0;
+                    for(int j=x1;j<x1+rows;++j){
+                        //initialise a pointer to that row
+                        thisSequence[r]=new unsigned char[columns];
+
+                        int c=0;
+                        //for each column in that row
+                        for(int k=y1;k<y1+columns;++k){
+                            
+                            thisSequence[r][c]=newSequence.wholeImage[0][j][k];
+                            c++;
+
+                        
+                        }
+                        
+                        
+                        r++;
+                    
+                        
+                    }
+                    
+                    
+            
+            newSequence.imageSequence.push_back(thisSequence);
+            
+        
+            }//printing ends here for x.
+
         }
-        
-      
-    }
+
+
+        }
     
-    std::cout<<"number of frames inside the frame vector is: "<<newSequence.imageSequence.size()<<std::endl;
+    std::cout<<newSequence.imageSequence.size()<<" Frames saved inside directory Frame_Dir! "<<std::endl;
     return newSequence;
     
     }

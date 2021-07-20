@@ -1,0 +1,29 @@
+To run:
+ 1) Go into directory from terminal and run "make clean" FIRST to make sure directory is clean of all object files and Frame_Dir
+ 2) Run "make" command in terminal to compile the program 
+ 3) Run "make run" to launch program with default arguments: ./extractor.exe ../sloan_image.pgm -t 100 300 300 600 -s 640 480 1968 -w none Sequence
+ else to run with different arguments, run the program from terminal with arguments:
+ 
+        The command line options for your program is extractor <inputPGMfile> [options],
+        where <inputPGMfile> is the large image you read in and [options] is a list of the
+        following parameters:
+        -t <int> <int> <int> <int> # x1 y1 x2 y2 (begin & end origin pixel coords,
+        for frame trajectory)
+        -s <int> <int> # <width> <height> (size of small frame in
+        pixels)
+        -w <string> <string> # write frames with <operation> <name>
+
+        For the -w flag, the parameter <operation> = none | invert | reverse | revinvert,
+        where none: no modification of data, invert: each pixel value v become 255-v, reverse:
+        reverse output (write frames out from last to first), revinvert: reverse and invert out
+        put. The parameter <name> = name of sequence base e.g. sequence-0000.pgm, sequence0001.pgm 
+        etc will be generated with <name> set to ‘sequence’.
+        
+
+extractor.cpp : The driver file that houses the user interface. This contains the event loops and user interaction handling.
+
+extractor_functions.cpp : This is the main implementation file that contains all the methods used to process the image and extract 
+frames and save them when program is running. 
+This is accessed from the driver file to provide results to the driver.
+
+extractor.h : This is the header file to the .cpp implementation. It has all the declarations for the .cpp files to preprocess.
